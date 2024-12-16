@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  flask_app:
+    build: .
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      - es
+
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: gold_prices
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+
+volumes:
+  pg_data:

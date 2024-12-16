@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Price Analysis</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+        .graph {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-5">Gold Price Analysis</h1>
+        <h3 class="text-center mb-4">
+            Today's Gold Price (per gram in INR): 
+            <span class="text-success">{{ '₹%.2f'|format(today_price / 31.1035) if today_price else 'Data Unavailable' }}</span>
+        </h3>
+
+        <div class="graph">
+            <h4>Weekly Gold Prices (INR per gram)</h4>
+            <div id="graphWeekly"></div>
+        </div>
+        <div class="graph">
+            <h4>Monthly Gold Prices (INR per gram)</h4>
+            <div id="graphMonthly"></div>
+        </div>
+        <div class="graph">
+            <h4>Quarterly Gold Prices (INR per gram)</h4>
+            <div id="graphQuarterly"></div>
+        </div>
+        <div class="graph">
+            <h4>Yearly Gold Prices (INR per gram)</h4>
+            <div id="graphYearly"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var graphWeekly = {{ graph_weekly_json | safe }};
+        var graphMonthly = {{ graph_monthly_json | safe }};
+        var graphQuarterly = {{ graph_quarterly_json | safe }};
+        var graphYearly = {{ graph_yearly_json | safe }};
+
+        Plotly.newPlot('graphWeekly', graphWeekly.data, graphWeekly.layout);
+        Plotly.newPlot('graphMonthly', graphMonthly.data, graphMonthly.layout);
+        Plotly.newPlot('graphQuarterly', graphQuarterly.data, graphQuarterly.layout);
+        Plotly.newPlot('graphYearly', graphYearly.data, graphYearly.layout);
+    </script>
+</body>
+</html>
